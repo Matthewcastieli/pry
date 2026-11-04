@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ca">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#102b3f">
+  <meta name="background-color" content="#f3f7f9">
+  <meta name="description" content="Comunica incidències al Far de manera ràpida i accessible.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="El Far">
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>Projecte Solidari · El Far</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon.svg">
+  <link rel="stylesheet" href="styles-readable.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="#" aria-label="Inici El Far"><span class="brand-mark">F</span><span><b>EL FAR</b><small>Projecte Solidari</small></span></a>
+  <button id="installBtn" class="install hidden" type="button">Instal·la l'app</button>
+</header>
+<main>
+  <section class="hero">
+    <p class="eyebrow">AJUDA RÀPIDA</p>
+    <h1>Necessites ajuda?</h1>
+    <p class="intro">Toca el botó. Explica què passa i comparteix la teva ubicació perquè l'equip pugui ajudar.</p>
+  </section>
+
+  <section class="map-panel panel" aria-labelledby="liveMapTitle">
+    <div class="map-header">
+      <div>
+        <p class="eyebrow">MAPA EN DIRECTE</p>
+        <h2 id="liveMapTitle">Avisos actius</h2>
+      </div>
+      <span id="alertCount" class="badge urgent">3 actius</span>
+    </div>
+    <div id="liveMap" class="live-map" aria-label="Mapa dels avisos actius"></div>
+    <ul id="alertList" class="alert-list" aria-live="polite"></ul>
+  </section>
+
+  <section class="emergency-card" aria-labelledby="alertTitle">
+    <div class="card-heading"><span class="status-dot"></span><span id="alertTitle">Avisar</span></div>
+    <div class="alert-actions">
+      <button id="normalBtn" class="alert-button" type="button">
+        <span class="alert-icon">!</span><span><strong>Toca per avisar</strong><small>Primer comparteix la ubicació</small></span>
+      </button>
+      <button id="urgentBtn" class="urgent-button" type="button" aria-label="Mantén premut tres segons per preparar un avís urgent">EMERGÈNCIA</button>
+    </div>
+    <p class="hint">Si hi ha perill immediat per a una persona, truca directament al <a href="tel:112">112</a>. Aquesta web no substitueix els serveis d'emergència.</p>
+  </section>
+
+  <section class="panel my-alerts-panel" aria-labelledby="myAlertsTitle">
+    <div class="panel-title"><div><p class="eyebrow">ELS MEUS AVISOS</p><h2 id="myAlertsTitle">Guardar per després</h2></div></div>
+    <ul id="myAlertsList" class="draft-list" aria-live="polite"></ul>
+  </section>
+
+  <section id="reportPanel" class="panel hidden" aria-labelledby="reportTitle">
+    <div class="panel-title"><div><p class="eyebrow">DETALLS DE L'AVÍS</p><h2 id="reportTitle">Afegeix informació</h2></div><span id="typeBadge" class="badge">Normal</span></div>
+    <form id="reportForm">
+      <div class="location-row">
+        <div><b>Ubicació</b><p id="locationText">Encara no s'ha obtingut.</p></div>
+        <button id="locateBtn" class="secondary" type="button">Obtenir ubicació</button>
+      </div>
+      <label for="userNameInput">Qui fa l'avís?</label>
+      <div class="user-name-row">
+        <input id="userNameInput" type="text" maxlength="40" placeholder="Nom o usuari" value="">
+        <span id="userTrustBadge" class="trust-badge">Confiança: 50</span>
+      </div>
+      <label for="riskLevel">Nivell de risc</label>
+      <select id="riskLevel">
+        <option value="possible">Possible perill</option>
+        <option value="danger">Risc evident</option>
+        <option value="urgent">Emergència immediata</option>
+      </select>
+      <label for="description">Detalls addicionals (opcional)</label>
+      <textarea id="description" rows="3" maxlength="1200" placeholder="Pots afegir més informació després, si cal..."></textarea>
+      <label class="check-row">
+        <input id="confirmRealAlert" type="checkbox">
+        <span>Confirma que aquest avís és real i no és una broma.</span>
+      </label>
+      <label class="check-row">
+        <input id="confirmWitness" type="checkbox">
+        <span>He verificat que hi ha una situació real o de perill.</span>
+      </label>
+      <label for="photoInput">Fotografia (opcional)</label>
+      <input id="photoInput" type="file" accept="image/*" capture="environment">
+      <label for="audioInput">Àudio (opcional)</label>
+      <input id="audioInput" type="file" accept="audio/*" capture>
+      <p class="privacy-note">Primer envia la ubicació. Si cal, pots afegir més detalls després. Els avisos falsos es bloquegen per seguretat.</p>
+      <div class="form-actions">
+        <button id="saveDraftBtn" class="secondary" type="button">Guardar per després</button>
+        <button id="cancelBtn" class="secondary" type="button">Cancel·la</button>
+        <button id="sendBtn" class="primary" type="submit">Envia l'avís</button>
+      </div>
+    </form>
+  </section>
+
+  <section id="confirmation" class="confirmation hidden" role="status" aria-live="polite">
+    <div class="check">✓</div><h2>Avís preparat</h2><p id="confirmationText">La incidència s'ha registrat en aquest dispositiu.</p><button id="newReportBtn" class="primary" type="button">Torna a l'inici</button>
+  </section>
+</main>
+<footer><span>Projecte Solidari · Els Cracks</span><span>Prototip web accessible</span></footer>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script src="app.js"></script>
+</body>
+</html>
